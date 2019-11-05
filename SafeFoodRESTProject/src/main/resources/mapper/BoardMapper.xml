@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- xml mapper와 짝이 되서 돌아갈 자바명, 패키지명을 적어주면 된다. -->
+<mapper namespace="com.mybatis.mapper.BoardMapper">
+
+	<!-- myBatis가 이용하는 query문장이 들어 있는 파일 java Mapper에 의해 이용됨. java Mapper - 
+		xml Mapper - myBatis java Mapper안에 있는 메소드 이름과 xml Mapper 안의 query id가 일치해야 
+		함. -->
+
+	<select id="selectAll" resultType="Board">
+		select * from qna_board order by
+		num
+	</select>
+
+	<select id="selectOne" resultType="Board" parameterType="String">
+		select *
+		from qna_board where num = #{num}
+	</select>
+
+	<insert id="insertBoard" parameterType="Board">
+		insert into qna_board
+		values(null,#{pass},#{title},#{content},#{id},sysdate(),0,0)
+	</insert>
+
+	<delete id="deleteBoard" parameterType="String">
+		delete from qna_board
+		where num =
+		#{num}
+	</delete>
+
+	<update id="updateCount" parameterType="String">
+		update qna_board set
+		count=count+1 where num = #{num}
+	</update>
+
+	<!-- homework -->
+	<update id="modifyBoard" parameterType="Board">
+		update qna_board set
+		content=#{content}, title=#{title} where num=#{num}
+	</update>
+
+	<select id="searchByTitle" parameterType="String" resultType="Board">
+		select * from qna_board
+		where title like #{word} order by wdate desc
+	</select>
+
+	<select id="searchByID" parameterType="String" resultType="Board">
+		select * from qna_board
+		where id like #{word} order by wdate desc
+	</select>
+</mapper>
+
+

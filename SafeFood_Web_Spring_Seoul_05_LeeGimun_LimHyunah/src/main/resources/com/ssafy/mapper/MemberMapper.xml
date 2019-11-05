@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.mapper.MemberMapper">
+	<!-- ResultMap & Query tags... -->
+
+	<resultMap type="Member_Has_Allergy" id="MHAResult">
+		<result column="mid" property="mid" />
+		<result column="acode" property="acode" />
+	</resultMap>
+
+	<resultMap type="Member" id="MemberResult">
+		<result column="id" property="id" />
+		<result column="pass" property="pass" />
+		<result column="name" property="name" />
+		<result column="address" property="address" />
+	</resultMap>
+	
+	<resultMap type="Allergy" id="AllergyResult">
+		<result column="acode" property="acode"/>
+		<result column="aname" property="aname"/>
+	</resultMap>
+
+	<resultMap type="Food" id="FoodResult2">
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="supportpereat" property="supportpereat" />
+		<result column="calory" property="calory" />
+		<result column="carbo" property="carbo" />
+		<result column="protein" property="protein" />
+		<result column="fat" property="fat" />
+		<result column="sugar" property="sugar" />
+		<result column="natrium" property="natrium" />
+		<result column="chole" property="chole" />
+		<result column="fattyacid" property="fattyacid" />
+		<result column="transfat" property="transfat" />
+		<result column="maker" property="maker" />
+		<result column="material" property="material" />
+		<result column="img" property="img" />
+	</resultMap>
+
+
+	<insert id="insert" parameterType="Member">
+		insert into member
+		values(#{id}, #{pass}, #{name}, #{address})
+	</insert>
+
+	<update id="modify" parameterType="Member">
+		update member set pass =
+		#{pass}, name = #{name}, address = #{address} where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="String">
+		delete from member where id =
+		#{id}
+	</delete>
+
+	<select id="searchOne" parameterType="String"
+		resultMap="MemberResult">
+		select * from member where id = #{id}
+	</select>
+
+	<!-- ///////////////////////////////////////////////////////// -->
+
+	<insert id="insertAllergy" parameterType="Member_Has_Allergy">
+		insert into
+		member_has_allergy values(#{mid}, #{acode})
+	</insert>
+
+	<select id="searchAllergy" resultMap="MHAResult">
+		select * from
+		member_has_allergy where mid = #{mid}
+	</select>
+
+	<delete id="deleteAllergy">
+		delete from member_has_allergy where mid = #{mid}
+	</delete>
+	
+	<select id="getAname" resultMap="AllergyResult" parameterType="String">
+		select * from allergy where acode = #{acode}
+	</select>
+
+	<!-- ///////////////////////////////////////////////////////// -->
+
+	<select id="searchIngestion" resultMap="FoodResult2" parameterType="String">
+		select f.code code,
+		f.name name, f.supportpereat supportpereat,
+		f.calory calory, f.carbo
+		carbo, f.protein protein, f.fat fat,
+		f.sugar sugar, f.natrium natrium,
+		f.chole chole, f.fattyacid fattyacid,
+		f.transfat transfat, f.maker
+		maker, f.material material, f.img img
+		
+		from ingestion i, food f
+		
+		where mid = #{mid} 
+			and i.code =f.code
+	</select>
+
+
+	<insert id="insertIngestion" parameterType="Ingestion">
+		insert into ingestion
+		values(#{mid}, #{code})
+	</insert>
+
+	<delete id="deleteIngestion" parameterType="Ingestion">
+		delete from ingestion
+		where mid = #{mid} and code = #{code}
+	</delete>
+
+
+
+
+
+</mapper>
+
+
